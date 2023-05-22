@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIDrawing</title>
+
+    <!-- ##### CSS ##### -->
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../static/images/favicon.png" type="image/x-icon">
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+
+</head>
+<body id="page-top">
+    <!-- ##### Header Start #####  -->
+        <!-- ##### Navbar Start #####  -->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand" href="#page-top"><img src="../static/images/logo.png" alt="..." /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><img src="{{url_for('static', filename='images/list.png', _external=True) }}" class="ul-li-icon">
+                            <a class="nav-link" href="drawing">Drawing</a></li>
+                        <li class="nav-item"><img src="{{url_for('static', filename='images/list.png', _external=True) }}" class="ul-li-icon">
+                            <a class="nav-link" href="gallery">Gallery</a></li>
+                        <li class="nav-item"><img src="{{url_for('static', filename='images/list.png', _external=True) }}" class="ul-li-icon">
+                            <a class="nav-link" href="#">MyPage</a></li>
+                        <li class="nav-item"><img src="{{url_for('static', filename='images/list.png', _external=True) }}" class="ul-li-icon">
+                            <a class="nav-link" href="#">Manual</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- ##### Navbar End #####  -->
+
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container">
+                <div class="masthead-subheading">AI Drawing</div>
+                <div class="masthead-heading text-uppercase">Text 2 Image</div>
+                <a class="btn btn-primary btn-xl text-uppercase" href="drawing">Quick, Draw!</a>
+            </div>
+        </header>
+    <!-- ##### Header End ##### -->
+
+
+
+    <!-- ##### Footer Start ##### -->
+    <!-- ##### Footer End ##### -->
+
+
+    <!-- ##### JS ##### -->
+    <script src="../static/js/bootstrap.js"></script>
+    <script src="../static/js/main.js"></script>
+    
+</body>
+</html>

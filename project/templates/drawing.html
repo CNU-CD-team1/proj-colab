@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Drawing Page</title>
+<link href="/static/css/bootstrap.min.css" rel="stylesheet" type = "text/css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+<style>
+  /*제목 입력창 크기 설정 */
+  #inputTitle{
+    width: 50%;
+    margin: 30px; /* 창과 다른 컴포넌트간의 간격 조정 */
+    padding: 10px; /*창의 상하 너비*/
+  
+  }
+  .center-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .margin-left {
+    margin-left : "20px";
+  }
+  .right-align {
+    display:"flex";
+    justify-content: "right";
+    align-items: "right"
+  }
+
+  .img-style {
+    margin:0px;
+    padding:0px;
+    cursor : pointer;
+  }
+
+  /* 생성된 이미지 배열 */
+  .grid {
+    display: grid;
+    grid-template-rows: repeat(2, minmax(25rem, auto));
+    grid-template-columns: repeat(2, 25rem);
+    grid-auto-rows: 25rem;
+    grid-gap: 0.5rem;
+  }
+</style>
+
+<script>
+  // 인식할 이미지 번호를 받아옴
+  function imgSelect(num) {
+      // 선택한 이미지 태그에 클래스 추가
+      var clickedImg = document.getElementById("clickimg" + num);
+      clickedImg.classList.add("shadow");
+
+      // 다른 이미지 태그에서 클래스 제거
+      var images = document.getElementsByClassName("img-style");
+      for (var i = 0; i < images.length; i++) {
+          if (i !== num) {
+              images[i].classList.remove("shadow");
+          }
+      }
+
+      // 선택한 이미지 인덱스를 selected_image 요소의 값으로 설정
+      var selectImg = document.getElementById("selected_image");
+      selectImg.value = num;
+  }
+</script>
+</head>
+<body>
+  <!--네비게이션 바 -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <!--로고-->
+    <div class="container-fluid row center-line">
+      <div class="col-6 col-md-4 center-line"><a class="navbar-brand" href="/">
+        <img src="{{ url_for('static', filename='images/logo.png', _external=True) }}" width="100px">
+        
+      </a></div>
+        
+      <!--화면 작아지면 드로잉, 갤러리.. 등등 토글로 만들어줌-->
+      <div class="col-3 col-md-2 center-line">
+        <button class="navbar-toggler center-line" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon center-line"></span>
+        </button>
+      </div>
+      
+      <!--드로잉, 갤러리, 마이페이지, 매뉴얼, 로그인 및 가입버튼-->
+      <div class="collapse navbar-collapse col-9 col-md-6" id="navbarNav">
+        <ul class="navbar-nav center-line col-11 col-md-8">
+          <li class="nav-item col-md-3">
+            <a class="nav-link" href="drawing">Drawing</a>
+          </li>
+          <li class="nav-item col-md-3">
+            <a class="nav-link" href="gallery">Gallery</a>
+          </li>
+          <li class="nav-item col-md-3">
+            <a class="nav-link" href="#MyPage">MyPage</a>
+          </li>
+          <li class="nav-item col-md-3">
+            <a class="nav-link" href="#Manual">Manual</a>
+          </li>
+          <li class="nav-item vstack gap-1 col-md-12">
+              <a class="btn btn-outline-primary btn-sm col-md-12" href="#login">login</a>
+              <a class="btn btn-outline-secondary btn-sm col-md-12" href="#join">가입</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <br>
+  <br>
+
+
+  <div class="center-line">
+        <img src="{{ url_for('static', filename='images/logo.png', _external=True) }}" width="200px">
+  </div>
+  <br>
+  <form class="mb-3 row center-line" action="/submit-caption" method="POST">
+    <div class="col-4">
+      <input type="text" name='caption-input' class="form-control" 
+      id="inputPassword2" placeholder="생성할 이미지에 대한 텍스트를 입력하세요.">  
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary " value="Submit">
+         이미지 생성
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brush" viewBox="0 0 16 16">
+          <path d="M15.825.12a.5.5 0 0 1 .132.584c-1.53 3.43-4.743 8.17-7.095 10.64a6.067 6.067 0 0 1-2.373 1.534c-.018.227-.06.538-.16.868-.201.659-.667 1.479-1.708 1.74a8.118 8.118 0 0 1-3.078.132 3.659 3.659 0 0 1-.562-.135 1.382 1.382 0 0 1-.466-.247.714.714 0 0 1-.204-.288.622.622 0 0 1 .004-.443c.095-.245.316-.38.461-.452.394-.197.625-.453.867-.826.095-.144.184-.297.287-.472l.117-.198c.151-.255.326-.54.546-.848.528-.739 1.201-.925 1.746-.896.126.007.243.025.348.048.062-.172.142-.38.238-.608.261-.619.658-1.419 1.187-2.069 2.176-2.67 6.18-6.206 9.117-8.104a.5.5 0 0 1 .596.04zM4.705 11.912a1.23 1.23 0 0 0-.419-.1c-.246-.013-.573.05-.879.479-.197.275-.355.532-.5.777l-.105.177c-.106.181-.213.362-.32.528a3.39 3.39 0 0 1-.76.861c.69.112 1.736.111 2.657-.12.559-.139.843-.569.993-1.06a3.122 3.122 0 0 0 .126-.75l-.793-.792zm1.44.026c.12-.04.277-.1.458-.183a5.068 5.068 0 0 0 1.535-1.1c1.9-1.996 4.412-5.57 6.052-8.631-2.59 1.927-5.566 4.66-7.302 6.792-.442.543-.795 1.243-1.042 1.826-.121.288-.214.54-.275.72v.001l.575.575zm-4.973 3.04.007-.005a.031.031 0 0 1-.007.004zm3.582-3.043.002.001h-.002z"/>
+        </svg></button>
+    </div> 
+  </form>
+
+  <br>
+  <!-- 
+  <div class="container text-center">
+    <div class="row">
+      <div class="center-line grid">
+         생성된 이미지 
+        {% for image in generated_image %}
+          <div class="center-line" style="margin:0px; padding:0px;">
+            <img src="{{ image|default(url_for('static', filename='images/default.png', _external=True)) }}" 
+            width="350px" class="img-style p-3 mb-5 bg-body-tertiary rounded" 
+            onClick="imgSelect({{ loop.index - 1 }})" id="clickimg{{ loop.index - 1 }}">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  -->
+
+  <div class="container text-center center-line" style="width:50%">
+    <!-- 생성된 이미지 -->
+    <div class="row row-cols-1 row-cols-md-2 center-line" style="margin: 0px; padding: 0px;">
+      {% for image in generated_image %}
+      <div class="col mb-4" style="margin: 0px; padding: 0px;"><img src="{{ image|default(url_for('static', filename='images/default.png', _external=True)) }}" 
+        width="350px" class="img-style p-3 mb-5 bg-body-tertiary rounded" 
+        onClick="imgSelect({{ loop.index - 1 }})" id="clickimg{{ loop.index - 1 }}">
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!--
+  <div class="container text-center center-line" style="width:50%">
+    생성된 이미지
+    <div class="row row-cols-1 row-cols-sm-2 center-line" style="margin: 0px; padding: 0px;">
+      <div class="col"><img src="../static/images/logo512.png" 
+        width="310px" class="img-style p-3 mb-5 bg-body-tertiary rounded" style="border:1px solid black;" onClick="imgSelect(0)" id="clickimg0" >
+      </div>
+      <div class="col"><img src="../static/images/logo512.png" 
+        width="310px" class="img-style p-3 mb-5 bg-body-tertiary rounded" style="border:1px solid black;" onClick="imgSelect(1)" id="clickimg1" >
+      </div>
+      <div class="col"><img src="../static/images/logo512.png" 
+        width="310px" class="img-style p-3 mb-5 bg-body-tertiary rounded" style="border:1px solid black;" onClick="imgSelect(2)" id="clickimg2" >
+      </div>
+      <div class="col"><img src="../static/images/logo512.png" 
+        width="310px" class="img-style p-3 mb-5 bg-body-tertiary rounded" style="border:1px solid black;" onClick="imgSelect(3)" id="clickimg3" >
+      </div>
+    </div>
+  </div>
+-->
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+      </div>
+        <form class="right-align" method="post" action="/save_image">
+          <!-- 제목 입력창 -->
+          <div class="center-line"> <input type="text" name='title-input' class="form-control" 
+            id="inputTitle" placeholder="웹툰의 제목을 입력하세요.">  </div>
+       
+            <div>
+          <input type="hidden" id="selected_image" name="selected_image" value="">
+          <input type="submit" class="btn btn-secondary" value="다시 만들기" name="action1"/>
+          <input type="submit" class="btn btn-primary" value="이 컷으로 만들기" name="action2"/>
+          </div>
+        </form>
+      <div class="col">
+        <br>
+        <br>
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+
+  
+
+</body>
+</html>
