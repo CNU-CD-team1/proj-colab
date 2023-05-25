@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIDrawing</title>
+
+    <!-- ##### CSS ##### -->
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../static/images/favicon.png" type="image/x-icon">
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+
+    <style>
+        #wrap {
+            width: 100%;
+            height: 700px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .child {
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+
+        #selectImg {
+            /* 화면 해상도에 따라 사이즈 유동적으로 바뀌게하기 */
+            width: 500px;
+            height: 500px;
+            background-color: rgb(170, 205, 221);
+            border-radius: 20px;
+            float: left;
+            background-image: url("../static/images/default.png");
+            background-size: contain;
+        }
+
+        #form_ {
+            width: 500px;
+            height: 500px;
+            /*background-color: rgb(255, 169, 233);*/
+            float: left;
+            text-align: center;
+        }
+
+        input[type="text"], textarea {
+            width: 400px;
+            height: 32px;
+            font-size: 15px;
+            border: 0;
+            border-radius: 10px;
+            outline: none;
+            padding-left: 5px;
+            background-color: rgb(243, 243, 243);
+        }
+        
+        input[type="text"] { border: solid 2px #FFE4B5; -webkit-transition: 0.5s; transition: 0.5s; }
+        input[type="text"]:focus { border: solid 2px #fce66b; background-color: #ffedcf; }
+
+        textarea { width: 400px; height: 370px; box-sizing: border-box; resize: both;
+            border: solid 2px #FFE4B5; -webkit-transition: 0.5s; transition: 0.5s; }
+        textarea:focus { border: solid 2px #fce66b; background-color: #ffedcf; }
+
+
+        #title {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        label {
+            color: rgb(90, 90, 90);
+        }
+
+        input[type="submit"] { background-color: #63dad0; border-radius: 5px; border: solid 5px #63dad0;
+            -webkit-transition: 0.5s; transition: 0.5s; color: rgb(238, 238, 238); font-weight: bolder;}
+        input[type="submit"]:hover { border: solid 5px #37afa5; background-color: #37afa5; }
+
+        #btnSave {
+            padding-top: 10px;
+        }
+        
+    </style>
+</head>
+
+<body id="page-top">
+    <header>
+        <!-- ##### Header Start #####  -->
+        <!-- ##### Navbar Start #####  -->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="margin: 0px; padding: 0px;">
+            <div class="container">
+                <a class="navbar-brand" href="#page-top"><img src="../static/images/logo.png" alt="..." /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
+                            <a class="nav-link" href="drawing">Drawing</a>
+                        </li>
+                        <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
+                            <a class="nav-link" href="gallery">Gallery</a>
+                        </li>
+                        <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
+                            <a class="nav-link" href="#">MyPage</a>
+                        </li>
+                        <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
+                            <a class="nav-link" href="#">Manual</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- ##### Navbar End #####  -->
+    </header>
+    <!-- ##### Header End ##### -->
+
+    <section>
+        <div id="wrap">
+            <div class="child">
+                <!-- 선택한 이미지 불러옴 -->
+                <div id="selectImg">
+                    <img>
+                </div>
+
+                <div id="form_">
+                    <form>
+                        <!-- 제목 입력 프롬프트창 -->
+                        <div id="title">
+                            <label for="T"></label>
+                            <input type="text" id="T" name="" value="" placeholder="↳ 제목을 입력해주세요.">
+                        </div>
+                        <!-- 컷 설명 프롬프트창 -->
+                        <div id="story">
+                            <label for="S"></label>
+                            <textarea id="S" placeholder="↳ 컷에 대한 설명을 적어주세요."></textarea>
+                        </div>
+                        <!-- 컷 생성 버튼 (생성된 작품id-제목 저장, 작품id-컷1에 대한 설명 저장) -->
+                        <div id="btnSave">
+                            <input type="submit" name="" value="S A V E">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+
+    <!-- ##### Footer Start ##### -->
+    <!-- ##### Footer End ##### -->
+
+
+    <!-- ##### JS ##### -->
+    <script src="../static/js/bootstrap.js"></script>
+    <script src="../static/js/main.js"></script>
+
+</body>
+
+</html>
