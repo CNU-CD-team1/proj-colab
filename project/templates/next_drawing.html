@@ -127,22 +127,81 @@
     }
 
     .imageText {
-      width:100%;
-      height:100%;
+      width: 100%;
+      height: 100%;
       display: none;
       text-align: center;
       align-items: center;
       user-select: text;
       background-color: #dfedff;
       border: 1px solid #e0e0e0;
-      padding:0px;
-      margin:0px;
+      padding: 0px;
+      margin: 0px;
       /* 텍스트 드래그 가능하도록 설정 */
       color: #3e3e3e;
       font-size: 14px;
       font-family: 'SUITE-Regular';
-      
     }
+
+    /* ##### 버튼 수정 ##### */
+    #make,
+    #imgsub {
+      background-color: #63dad0;
+      border-radius: 5px;
+      border: solid 5px #63dad0;
+      -webkit-transition: 0.5s;
+      transition: 0.5s;
+      color: rgb(238, 238, 238);
+      font-weight: bolder;
+    }
+
+    #make:hover {
+      border: solid 5px #37afa5;
+      background-color: #37afa5;
+    }
+
+    #imgsub:hover {
+      border: solid 5px #37afa5;
+      background-color: #37afa5;
+    }
+
+    #again {
+      background-color: #ffb897;
+      border-radius: 5px;
+      border: solid 5px #ffb897;
+      -webkit-transition: 0.5s;
+      transition: 0.5s;
+      color: rgb(238, 238, 238);
+      font-weight: bolder;
+    }
+
+    #again:hover {
+      border: solid 5px #e9874f;
+      background-color: #e9874f;
+    }
+
+    /* ##### 프롬프트창 ##### */
+    input[type="text"] {
+      width: 450px;
+      height: 32px;
+      font-size: 15px;
+      border: 0;
+      border-radius: 10px;
+      outline: none;
+      background-color: rgb(243, 243, 243);
+    }
+
+    input[type="text"] {
+      border: solid 2px #FFE4B5;
+      -webkit-transition: 0.5s;
+      transition: 0.5s;
+    }
+
+    input[type="text"]:focus {
+      border: solid 2px #fce66b;
+      background-color: #ffedcf;
+    }
+    
   </style>
 
   <script>
@@ -204,24 +263,26 @@
   <p class="center-line prev_cut_explain" style="margin-bottom:0px;">마우스를 올려서 이전 컷을 생성한 텍스트를 참고해보세요 ! </p>
   <div class="container center-line" style="margin-top:0px; align-items:normal;">
     <!-- ##### 이전 컷 ##### -->
-    <div class="row  center-line"
-      style="width: 43%; margin: 0px; padding: 0px; align-items:normal; ">
-      <div class="col card col-4 mb-4" style=" width: 150px; height:150px; margin: 10px; padding:3px; align-items: center;">
+    <div class="row  center-line" style="width: 43%; margin: 0px; padding: 0px; align-items:normal; ">
+      <div class="col card col-4 mb-4"
+        style=" width: 150px; height:150px; margin: 10px; padding:3px; align-items: center;">
         <img src="../static/images/default.png" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
           onmouseout="hideText(this)">
         <p class="imageText" draggable="true" style="display: none;">이전 컷을 생성한 텍스트1</p>
 
       </div>
-      <div class="col card col-4 mb-4" style=" width: 150px; height:150px; margin: 10px; padding:3px;  align-items: center;">
+      <div class="col card col-4 mb-4"
+        style=" width: 150px; height:150px; margin: 10px; padding:3px;  align-items: center;">
         <img src="../static/images/default.png" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
           onmouseout="hideText(this)">
         <p class="imageText" draggable="true" style="display: none;">이전 컷을 생성한 텍스트2</p>
 
       </div>
-      <div class="col card col-4 mb-4" style=" width: 150px; height:150px; margin: 10px; padding:3px;  align-items: center;">
+      <div class="col card col-4 mb-4"
+        style=" width: 150px; height:150px; margin: 10px; padding:3px;  align-items: center;">
         <img src="../static/images/default.png" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
           onmouseout="hideText(this)">
-        <p class="imageText"  draggable="true" style="display: none;">이전 컷을 생성한 텍스트3</p>
+        <p class="imageText" draggable="true" style="display: none;">이전 컷을 생성한 텍스트3</p>
 
       </div>
     </div>
@@ -237,7 +298,7 @@
 
     function hideText(element) {
       element.style.display = "block";
-      element.style.pointerEvents ="all";
+      element.style.pointerEvents = "all";
       element.nextElementSibling.style.display = "none";
     }
   </script>
@@ -344,7 +405,7 @@
         placeholder="생성할 이미지에 대한 텍스트를 입력하세요.">
     </div>
     <div class="col-auto">
-      <button type="submit" class="btn btn-primary " value="Submit">
+      <button type="submit" id="make" value="Submit">
         이미지 생성
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brush"
           viewBox="0 0 16 16">
@@ -375,15 +436,10 @@
       <div class="col">
       </div>
       <form class="right-align" method="post" action="/save_image">
-        <!-- 제목 입력창 -->
-        <div class="center-line">
-          <input type="text" name='title-input' class="form-control" id="inputTitle" placeholder="웹툰의 제목을 입력하세요.">
-        </div>
-
         <div>
           <input type="hidden" id="selected_image" name="selected_image" value="">
-          <input type="submit" class="btn btn-secondary" value="다시 만들기" name="action1" />
-          <input type="submit" class="btn btn-primary" value="이 컷으로 만들기" name="action2" />
+          <input type="submit" id="again" value="다시 만들기" name="action1" />
+          <input type="submit" id="make" value="이 컷으로 만들기" name="action2" />
         </div>
       </form>
       <div class="col">
@@ -395,7 +451,9 @@
     </div>
   </div>
 
-
+  <!-- ##### JS ##### -->
+  <script src="../static/js/bootstrap.js"></script>
+  <script src="../static/js/main.js"></script>
 
 </body>
 
