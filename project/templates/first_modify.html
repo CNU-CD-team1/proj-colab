@@ -129,24 +129,25 @@
             <div class="child">
                 <!-- 선택한 이미지 불러옴 -->
                 <div id="selectImg">
-                    <img>
+                    <img src="data:image/png;base64,{{ image_data }}" > 
                 </div>
 
                 <div id="form_">
-                    <form>
+                    <!-- ##### 제목, 컷설명 저장 ##### -->
+                    <form method="post" action="/save_detail_first">
                         <!-- 제목 입력 프롬프트창 -->
                         <div id="title">
                             <label for="T"></label>
-                            <input type="text" id="T" name="" value="" placeholder="↳ 제목을 입력해주세요.">
+                            <input type="text" id="T" name="title-input" value="" placeholder="↳ 제목을 입력해주세요.">
                         </div>
                         <!-- 컷 설명 프롬프트창 -->
                         <div id="story">
                             <label for="S"></label>
-                            <textarea id="S" placeholder="↳ 컷에 대한 설명을 적어주세요."></textarea>
+                            <textarea id="S" name="cut-input" placeholder="↳ 컷에 대한 설명을 적어주세요."></textarea>
                         </div>
                         <!-- 컷 생성 버튼 (생성된 작품id-제목 저장, 작품id-컷1에 대한 설명 저장) -->
                         <div id="btnSave">
-                            <input type="submit" name="" value="S A V E">
+                            <input type="submit" name="action3" value="S A V E">
                         </div>
                     </form>
                 </div>
