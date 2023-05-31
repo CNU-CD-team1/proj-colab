@@ -111,7 +111,7 @@
     .tipExplain {
       padding-top: 10px;
       color: #3e3e3e;
-      font-size: 18px;
+      font-size: 14px;
       text-align: center;
       font-family: 'SUITE-Regular';
     }
@@ -272,7 +272,7 @@
       var questionMarks = document.getElementsByClassName('questionMark');
       var paints = document.getElementsByClassName('paint');
       var tipExplain = document.querySelector('.tipExplain');
-      var originalText = tipExplain.textContent;
+      var originalText = tipExplain.innerHTML;
 
       // 각 이미지에 이벤트 리스너 등록
       for (var i = 0; i < questionMarks.length; i++) {
