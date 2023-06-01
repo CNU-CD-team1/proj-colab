@@ -506,14 +506,14 @@
     <div class="child">
       <!-- 선택한 이미지 불러옴 -->
       <div id="selectImg">
-        <img src="data:image/png;base64,{{ image_data }}">
+        <img src="data:image/png;base64,{{ image_data }}" style="width: 500px; height: 500px; border-radius: 20px;">
       </div>
       <div id="form_">
         <br>
         <!-- post의 title 받아오기 -->
         <!-- action/ name 수정 -->
         <!-- ##### 다음 컷설명 저장 ##### -->
-        <form method="post" action="/save_detail2">
+        <form method="post" action="/save_detail_nth">
           <!-- 컷 설명 프롬프트창 -->
           <div id="story">
             <label for="S"></label>
