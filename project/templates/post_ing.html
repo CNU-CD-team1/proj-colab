@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Title</title>
+
+    <!-- ##### CSS ##### -->
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../static/images/favicon.png" type="image/x-icon">
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+
+<style>
+.wrapper{
+  display: flex;
+  max-width: 1200px;
+  position: relative;
+}
+.wrapper i{
+  top: 50%;
+  height: 44px;
+  width: 44px;
+  color: #343F4F;
+  cursor: pointer;
+  font-size: 1.15rem;
+  position: absolute;
+  text-align: center;
+  line-height: 44px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.1s linear;
+}
+.wrapper i:active{
+  transform: translateY(-50%) scale(0.9);
+}
+.wrapper i:hover{
+  background: #f2f2f2;
+}
+.wrapper i:first-child{
+  left: -22px;
+  display: none;
+}
+.wrapper i:last-child{
+  right: -22px;
+}
+.wrapper .carousel{
+  font-size: 0px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+.carousel.dragging{
+  cursor: grab;
+  scroll-behavior: auto;
+}
+.carousel.dragging img{
+  pointer-events: none;
+}
+.carousel img{
+  height: 340px;
+  object-fit: cover;
+  user-select: none;
+  margin-left: 14px;
+  width: calc(100% / 3);
+}
+.carousel img:first-child{
+  margin-left: 0px;
+}
+@media screen and (max-width: 900px) {
+  .carousel img{
+    width: calc(100% / 2);
+  }
+}
+@media screen and (max-width: 550px) {
+  .carousel img{
+    width: 100%;
+  }
+}
+</style>
+
+<body>
+
+    <!-- ##### Navbar Start #####  -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#page-top"><img src="../static/images/logo.png" alt="..." /></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars ms-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
+                        <a class="nav-link" href="drawing">Drawing</a>
+                    </li>
+                    <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
+                        <a class="nav-link" href="gallery">Gallery</a>
+                    </li>
+                    <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
+                        <a class="nav-link" href="#">MyPage</a>
+                    </li>
+                    <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
+                        <a class="nav-link" href="#">Manual</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- ##### Navbar End #####  -->
+
+    <div class="wrapper">
+        <i id="left" class="fa-solid fa-angle-left"></i>
+        <div class="carousel">
+          <img src="../static/images/default.png" alt="img" draggable="false">
+          <img src="../static/images/default.png" alt="img" draggable="false">
+          <img src="../static/images/default.png" alt="img" draggable="false">
+          <img src="../static/images/default.png" alt="img" draggable="false">
+          <img src="../static/images/default.png" alt="img" draggable="false">
+          <img src="../static/images/default.png" alt="img" draggable="false">
+          <img src="../static/images/default.png" alt="img" draggable="false">
+          <img src="../static/images/default.png" alt="img" draggable="false">
+          <img src="../static/images/default.png" alt="img" draggable="false">
+        </div>
+        <i id="right" class="fa-solid fa-angle-right"></i>
+    </div>
+
+
+    <!-- ##### JS ##### -->
+    <script src="../static/js/bootstrap.js"></script>
+    <script src="../static/js/main.js"></script>
+</body>
+
+</html>
