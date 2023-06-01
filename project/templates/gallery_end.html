@@ -152,7 +152,7 @@
             <a class="nav-link" href="drawing">Drawing</a>
           </li>
           <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
-            <a class="nav-link" href="gallery">Gallery</a>
+            <a class="nav-link" href="gallery_ing">Gallery</a>
           </li>
           <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
             <a class="nav-link" href="#">MyPage</a>
@@ -166,8 +166,6 @@
   </nav>
   <!-- ##### Navbar End #####  -->
   <br>
-  <br>
-
 
   <!-- ##### Gallerbar Start ##### -->
   <div class="gallery-bar container">
@@ -178,7 +176,7 @@
       <!-- ##### 완결작/진행작 버튼 #####-->
       <div class="col-4 center-line">
         <div class="onoff-button">
-          <a class="circlebutton" href="/gallery_ing" style="padding:8px; float:left;"><img
+          <a class="circlebutton" href="gallery_ing" style="padding:8px; float:left;"><img
               src="../static/images/circle_button2.png" height="40px" /></a>
           <h6 style="color:#7E7E7E; font-weight:bolder; font-size:larger; padding-top: 16px;">완성작</h6>
         </div>
@@ -209,7 +207,7 @@
           <img src="data:image/png;base64,{{ images[i]|b64encode }}" alt="Image" class="card-img-top"
             style="margin-top: 10px;">
           <div class="card-text">
-            <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p>
+            <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p> <!-- ids[i] 아이디 값으로 클릭했을 떄 보내주는 것-->
           </div>
           <!-- ##### 하트 아이콘 ##### -->
           <i class="bi bi-heart"></i>
