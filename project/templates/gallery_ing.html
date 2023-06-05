@@ -203,6 +203,7 @@
       {% for i in range(ids|length) %}
       <div class="col card col-3 mb-4" style=" width: 250px; margin: 20px;">
         <a style="text-decoration: none; color: black;">
+          <form action="/gallery_ing" method="get" onclick="this.submit(); location.href='post_ing'">
           <img src="data:image/png;base64,{{ images[i]|b64encode }}" alt="Image" class="card-img-top"
             style="margin-top: 10px;">
           <div class="card-text">
@@ -211,6 +212,7 @@
           <!-- ##### 하트 아이콘 ##### -->
           <i class="bi bi-heart"></i>
           <i class='result'> {{ likes[i] }} </i>
+          <input type = "hidden" name ="selected_post" value ="{{ids[i]}}">
           <script>
             var i = 0;
             $('.bi-heart').on('click', function () {
@@ -231,8 +233,15 @@
               }
               resultElement.innerText = number;
             });
+
+            /*
+            $('.card-img-top').on('click', function () {
+              window.location.href="post_ing";
+              // 해당 페이지로 url 이동
+            });*/
           </script>
         </a>
+      </form>
       </div>
       {% endfor %}
     </div>

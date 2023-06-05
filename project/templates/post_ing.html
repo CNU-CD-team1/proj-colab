@@ -219,10 +219,10 @@
     width: 100%;
     height: 40px;
     /*border: 1px solid green;*/
-    padding-top:3px;
+    padding-top: 3px;
     padding-left: 10px;
     font-size: 10px;
-    text-align:initial;
+    text-align: initial;
   }
 
   .competitionCut {
@@ -230,8 +230,8 @@
     border-radius: 8px;
     text-align: center;
     width: 230px;
-    margin:3px;
-    
+    margin: 3px;
+
   }
 
   .heart-icon {
@@ -306,7 +306,7 @@
   <div class="center-line">
     <div style="width:70%;">
       <div class="title">
-        제목입니다.
+        {{ selected_post }} title {{ votes }}
       </div>
     </div>
   </div>
@@ -314,283 +314,165 @@
 
   <br>
 
-  <!-- 컷 이미지 및 컷 설명창 & 다음그림 그리기-->
   <div class="container center-line" style="width:75%;">
     <div class="row justify-content-between">
-
+      {% for i in range(images|length) %}
+      <!-- 컷 이미지 및 컷 설명창 & 다음그림 그리기-->
       <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
         <div class="img" style="width:85%; text-align:center;">
-          <!-- 첫 번째 컷 -->
-          <img src="../static/images/default.png" style="width:100%;">
-          <!-- 첫 번째 컷 설명  -->
-          <div class="imgExplain" style="width:100%; height:120px; margin-top:5px;">
-            설명창1
+          <!-- 컷 -->
+          <img src="{{ images[i]|default(url_for('static', filename='images/default.png', _external=True)) }}"
+            style="width: 100%;" onclick="dis()">
+          <!-- 컷 설명  -->
+          <div class="imgExplain" style="width: 100%; height:120px; margin-top:5px;">
+            {{ prompts[i] }}
           </div>
         </div>
       </div>
+      {% endfor %}
 
-      <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
+      {% if images|length < 3 %} {% for i in range(3 - image|length) %} <div class="col-md d-flex center-line"
+        style="margin: 0px; padding: 0px;">
         <div class="img" style="width:85%; text-align:center;">
-          <!-- 두 번째 컷 -->
-          <img src="../static/images/default.png" style="width:100%;">
-          <!-- 두 번째 컷 설명  -->
-          <div class="imgExplain" style="width:100%; height:120px; margin-top:5px;">
-            설명창2
+          <!-- 컷 -->
+          <img src="../static/images/default.png" style="width: 100%;" onclick="dis()">
+          <!-- 컷 설명  -->
+          <div class="imgExplain" style="width: 100%; height:120px; margin-top:5px;">
+            해당 컷의 프롬프트값
           </div>
         </div>
-      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
 
-      <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
-        <div class="img" style="width:85%; text-align:center;">
-          <!-- 세 번째 컷 -->
-          <img src="../static/images/default.png" style="width:100%;">
-          <!-- 세 번째 컷 설명  -->
-          <div class="imgExplain" style="width:100%; height:120px; margin-top:5px;">
-            설명창3
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
-        <div class="img" style="width:85%; text-align:center;">
-          <!-- 네 번째 컷 -->
-          <a href="next_drawing">
-            <img src="../static/images/plus.png" style="width:100%;">
-          </a>
-          <!-- 네 번째 컷 설명  -->
-          <div class="imgExplain" style="width:100%; height:120px; margin-top:5px;">
-            이어갈 그림을 그리고 싶다면 위의 '+' 버튼을 눌러주세요.
-          </div>
+    <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
+      <div class="img" style="width:85%; text-align:center;">
+        <!-- 네 번째 컷 -->
+        <a href="next_drawing">
+          <img src="../static/images/plus.png" style="width:100%;">
+        </a>
+        <!-- 네 번째 컷 설명  -->
+        <div class="imgExplain" style="width: 100%; height:120px; margin-top:5px;">
+          이어갈 그림을 그리고 싶다면 위의 '+' 버튼을 눌러주세요.
         </div>
       </div>
     </div>
   </div>
+  </div>
 
   <br>
 
+  <!-- 이미지 클릭시 경쟁작 show/hide -->
+  <!-- 클릭한 컷의 id에 따라 경쟁작 보여주기.. -->
+  <script>
+    function dis() {
+      if($('.competitionPart').css('display') == 'none'){
+            $('.competitionPart').show();
+        }else{
+            $('.competitionPart').hide();
+    }
+  }
+  </script>
+
   <!-- ###### 경쟁작 시작 부분 ###### -->
-  <div class="container center-line competitionPart">
+  <div class="container center-line competitionPart" display='none'>
     <div class="row">
       <div class="col-3 competitionCut">
         <a href="#postid" style="text-decoration: none; color:black;">
           <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
           <div class="card-text">
-            <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p>
+            <p class="postName"> title </p>
           </div>
         </a>
-          <div class="heart-icon">
-            <i class="bi bi-heart"></i>
-            <i class="result"> {{ likes[i] }} </i>
-          </div>
-          <!-- ##### 하트 아이콘 ##### -->
+        <div class="heart-icon">
+          <i class="bi bi-heart"></i>
+          <i class="result"> votes </i>
+        </div>
 
-          <script>
-            var i = 0;
-            $('.bi-heart').on('click', function () {
-              // 결과를 표시할 element
-              const resultElement = document.getElementsByClassName('result');
-              // 현재 화면에 표시된 값
-              let number = resultElement.innerText;
-              if (i == 0) {
-                $(this).removeClass('bi-heart');
-                $(this).addClass('bi-heart-fill');
-                number = parseInt(number) + 1;
-                i++;
-              } else if (i == 1) {
-                $(this).removeClass('bi-heart-fill');
-                $(this).addClass('bi-heart');
-                number = parseInt(number) - 1;
-                i--;
-              }
-              resultElement.innerText = number;
-            });
-          </script>
-        
-      </div>
-      
-      <div class="col-3 competitionCut">
-        <a href="#postid" style="text-decoration: none; color:black;">
-          <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
-          <div class="card-text">
-            <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p>
-          </div>
-        </a>
-          <div class="heart-icon">
-            <i class="bi bi-heart"></i>
-            <i class="result"> {{ likes[i] }} </i>
-          </div>
-          <!-- ##### 하트 아이콘 ##### -->
-
-          <script>
-            var i = 0;
-            $('.bi-heart').on('click', function () {
-              // 결과를 표시할 element
-              const resultElement = document.getElementsByClassName('result');
-              // 현재 화면에 표시된 값
-              let number = resultElement.innerText;
-              if (i == 0) {
-                $(this).removeClass('bi-heart');
-                $(this).addClass('bi-heart-fill');
-                number = parseInt(number) + 1;
-                i++;
-              } else if (i == 1) {
-                $(this).removeClass('bi-heart-fill');
-                $(this).addClass('bi-heart');
-                number = parseInt(number) - 1;
-                i--;
-              }
-              resultElement.innerText = number;
-            });
-          </script>
-        
       </div>
 
       <div class="col-3 competitionCut">
         <a href="#postid" style="text-decoration: none; color:black;">
           <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
           <div class="card-text">
-            <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p>
+            <p class="postName"> title </p>
           </div>
         </a>
-          <div class="heart-icon">
-            <i class="bi bi-heart"></i>
-            <i class="result"> {{ likes[i] }} </i>
-          </div>
-          <!-- ##### 하트 아이콘 ##### -->
+        <div class="heart-icon">
+          <i class="bi bi-heart"></i>
+          <i class="result"> votes </i>
+        </div>
 
-          <script>
-            var i = 0;
-            $('.bi-heart').on('click', function () {
-              // 결과를 표시할 element
-              const resultElement = document.getElementsByClassName('result');
-              // 현재 화면에 표시된 값
-              let number = resultElement.innerText;
-              if (i == 0) {
-                $(this).removeClass('bi-heart');
-                $(this).addClass('bi-heart-fill');
-                number = parseInt(number) + 1;
-                i++;
-              } else if (i == 1) {
-                $(this).removeClass('bi-heart-fill');
-                $(this).addClass('bi-heart');
-                number = parseInt(number) - 1;
-                i--;
-              }
-              resultElement.innerText = number;
-            });
-          </script>
-        
+
       </div>
 
       <div class="col-3 competitionCut">
         <a href="#postid" style="text-decoration: none; color:black;">
           <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
           <div class="card-text">
-            <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p>
+            <p class="postName"> title </p>
           </div>
         </a>
-          <div class="heart-icon">
-            <i class="bi bi-heart"></i>
-            <i class="result"> {{ likes[i] }} </i>
-          </div>
-          <!-- ##### 하트 아이콘 ##### -->
+        <div class="heart-icon">
+          <i class="bi bi-heart"></i>
+          <i class="result"> votes </i>
+        </div>
 
-          <script>
-            var i = 0;
-            $('.bi-heart').on('click', function () {
-              // 결과를 표시할 element
-              const resultElement = document.getElementsByClassName('result');
-              // 현재 화면에 표시된 값
-              let number = resultElement.innerText;
-              if (i == 0) {
-                $(this).removeClass('bi-heart');
-                $(this).addClass('bi-heart-fill');
-                number = parseInt(number) + 1;
-                i++;
-              } else if (i == 1) {
-                $(this).removeClass('bi-heart-fill');
-                $(this).addClass('bi-heart');
-                number = parseInt(number) - 1;
-                i--;
-              }
-              resultElement.innerText = number;
-            });
-          </script>
-        
+
       </div>
 
       <div class="col-3 competitionCut">
         <a href="#postid" style="text-decoration: none; color:black;">
           <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
           <div class="card-text">
-            <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p>
+            <p class="postName"> title </p>
           </div>
         </a>
-          <div class="heart-icon">
-            <i class="bi bi-heart"></i>
-            <i class="result"> {{ likes[i] }} </i>
-          </div>
-          <!-- ##### 하트 아이콘 ##### -->
+        <div class="heart-icon">
+          <i class="bi bi-heart"></i>
+          <i class="result"> votes </i>
+        </div>
 
-          <script>
-            var i = 0;
-            $('.bi-heart').on('click', function () {
-              // 결과를 표시할 element
-              const resultElement = document.getElementsByClassName('result');
-              // 현재 화면에 표시된 값
-              let number = resultElement.innerText;
-              if (i == 0) {
-                $(this).removeClass('bi-heart');
-                $(this).addClass('bi-heart-fill');
-                number = parseInt(number) + 1;
-                i++;
-              } else if (i == 1) {
-                $(this).removeClass('bi-heart-fill');
-                $(this).addClass('bi-heart');
-                number = parseInt(number) - 1;
-                i--;
-              }
-              resultElement.innerText = number;
-            });
-          </script>
-        
+
       </div>
-      
+
       <div class="col-3 competitionCut">
         <a href="#postid" style="text-decoration: none; color:black;">
           <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
           <div class="card-text">
-            <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p>
+            <p class="postName"> title </p>
           </div>
         </a>
-          <div class="heart-icon">
-            <i class="bi bi-heart"></i>
-            <i class="result"> {{ likes[i] }} </i>
-          </div>
-          <!-- ##### 하트 아이콘 ##### -->
+        <div class="heart-icon">
+          <i class="bi bi-heart"></i>
+          <i class="result"> votes </i>
+        </div>
 
-          <script>
-            var i = 0;
-            $('.bi-heart').on('click', function () {
-              // 결과를 표시할 element
-              const resultElement = document.getElementsByClassName('result');
-              // 현재 화면에 표시된 값
-              let number = resultElement.innerText;
-              if (i == 0) {
-                $(this).removeClass('bi-heart');
-                $(this).addClass('bi-heart-fill');
-                number = parseInt(number) + 1;
-                i++;
-              } else if (i == 1) {
-                $(this).removeClass('bi-heart-fill');
-                $(this).addClass('bi-heart');
-                number = parseInt(number) - 1;
-                i--;
-              }
-              resultElement.innerText = number;
-            });
-          </script>
-        
+        <!-- ##### 하트 아이콘 ##### -->
+
+        <script>
+          var i = 0;
+          $('.bi-heart').on('click', function () {
+            // 결과를 표시할 element
+            const resultElement = document.getElementsByClassName('result');
+            // 현재 화면에 표시된 값
+            let number = resultElement.innerText;
+            if (i == 0) {
+              $(this).removeClass('bi-heart');
+              $(this).addClass('bi-heart-fill');
+              number = parseInt(number) + 1;
+              i++;
+            } else if (i == 1) {
+              $(this).removeClass('bi-heart-fill');
+              $(this).addClass('bi-heart');
+              number = parseInt(number) - 1;
+              i--;
+            }
+            resultElement.innerText = number;
+          });
+        </script>
+
+
       </div>
 
     </div>
