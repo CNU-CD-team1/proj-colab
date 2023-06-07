@@ -264,27 +264,25 @@
   <div class="container center-line" style="margin-top:0px; align-items:normal;">
     <!-- ##### 이전 컷 ##### -->
     <div class="row  center-line" style="width: 43%; margin: 0px; padding: 0px; align-items:normal; ">
+      {% for i in range(images|length) %}
       <div class="col card col-4 mb-4"
         style=" width: 150px; height:150px; margin: 10px; padding:3px; align-items: center;">
-        <img src="../static/images/default.png" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
+        <img src="data:image/png;base64,{{ images[i]|b64encode }}" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
           onmouseout="hideText(this)">
-        <p class="imageText" draggable="true" style="display: none;">이전 컷을 생성한 텍스트1</p>
-
+        <p class="imageText" draggable="true" style="display: none;"> {{ prompts[i] }}</p>
       </div>
+      {% endfor %}
+
+      {% if images|length < 3 %} {% for i in range(3 - images|length) %}
       <div class="col card col-4 mb-4"
         style=" width: 150px; height:150px; margin: 10px; padding:3px;  align-items: center;">
         <img src="../static/images/default.png" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
           onmouseout="hideText(this)">
-        <p class="imageText" draggable="true" style="display: none;">이전 컷을 생성한 텍스트2</p>
-
+        <p class="imageText" draggable="true" style="display: none;"> 이전 컷을 생성한 텍스트 </p>
       </div>
-      <div class="col card col-4 mb-4"
-        style=" width: 150px; height:150px; margin: 10px; padding:3px;  align-items: center;">
-        <img src="../static/images/default.png" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
-          onmouseout="hideText(this)">
-        <p class="imageText" draggable="true" style="display: none;">이전 컷을 생성한 텍스트3</p>
+      {% endfor %}
+      {% endif %}
 
-      </div>
     </div>
   </div>
   <!-- #### 이전컷 마우스 이벤트 #### -->
@@ -435,13 +433,16 @@
     <div class="row">
       <div class="col">
       </div>
-      <form class="right-align" method="post" action="/save_image">
+      <!-- ########## form태그 액션 수정 / 받아온 id값에 해당되는 post_no에 저장,, ##########-->
+      <form class="right-align" method="post" action="/save_image_next">
         <div>
-          <input type="hidden" id="selected_image" name="selected_image" value="{{ id }}">
-          <input type="submit" id="again" value="다시 만들기" name="action1" />
-          <input type="submit" id="make" value="이 컷으로 만들기" name="action2" />
+          <input type="hidden" id="selected_image" name="selected_image" value="">
+          <input type="hidden" name="post_id" value="{{ id }}">
+          <input type="submit" id="again" value="다시 만들기" name=".." />
+          <input type="submit" id="make" value="이 컷으로 만들기" name="select_button" />
         </div>
       </form>
+      <!-- ########## form태그  ##########-->
       <div class="col">
         <br>
         <br>
