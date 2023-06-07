@@ -322,12 +322,11 @@
       <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
         <div class="img" style="width:85%; text-align:center;">
           <!-- 컷 -->
-          <img src="data:image/png;base64,{{ images[i]|b64encode }}"
-            style="width: 100%;" onclick="dis()">
+          <img src="data:image/png;base64,{{ images[i]|b64encode }}" style="width: 100%;" onclick="dis()">
           <!-- 컷 설명  -->
           <div class="imgExplain" style="width: 100%; height:120px; margin-top:5px;">
             {{ scripts[i] }}
-          <!-- prompts[i]값은 hover했을때 보여주고/ 설명창은 cut내용(cut_script) 들어가야함 -->
+            <!-- prompts[i]값은 hover했을때 보여주고/ 설명창은 cut내용(cut_script) 들어가야함 -->
           </div>
         </div>
       </div>
@@ -349,11 +348,14 @@
 
     <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
       <div class="img" style="width:85%; text-align:center;">
-        <!-- 네 번째 컷 -->
-        <a href="next_drawing">
-          <img src="../static/images/plus.png" style="width:100%;">
-        </a>
-        <!-- 네 번째 컷 설명  -->
+        <!-- ########## Next Drawing ########## -->
+        <form action="/next_drawing" method="post">
+          <button type="submit" onclick="location.href='next_drawing';" style="border:none;">
+            <img src="../static/images/plus.png" style="width:100%;">
+          </button>
+          <input type = "hidden" name ="selected_post" value ="{{ id }}">
+        </form>
+        <!-- 버튼 설명  -->
         <div class="imgExplain" style="width: 100%; height:120px; margin-top:5px;">
           이어갈 그림을 그리고 싶다면 위의 '+' 버튼을 눌러주세요.
         </div>
@@ -368,12 +370,12 @@
   <!-- 클릭한 컷의 id에 따라 경쟁작 보여주기.. -->
   <script>
     function dis() {
-      if($('.competitionPart').css('display') == 'none'){
-            $('.competitionPart').show();
-        }else{
-            $('.competitionPart').hide();
+      if ($('.competitionPart').css('display') == 'none') {
+        $('.competitionPart').show();
+      } else {
+        $('.competitionPart').hide();
+      }
     }
-  }
   </script>
 
   <!-- ###### 경쟁작 시작 부분 ###### -->

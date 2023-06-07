@@ -260,7 +260,7 @@
 
 
   <!-- ##### 이전 컷 바 ##### -->
-  <p class="center-line prev_cut_explain" style="margin-bottom:0px;">마우스를 올려서 이전 컷을 생성한 텍스트를 참고해보세요 ! </p>
+  <p class="center-line prev_cut_explain" style="margin-bottom:0px;"> {{ id }} : 마우스를 올려서 이전 컷을 생성한 텍스트를 참고해보세요 ! </p>
   <div class="container center-line" style="margin-top:0px; align-items:normal;">
     <!-- ##### 이전 컷 ##### -->
     <div class="row  center-line" style="width: 43%; margin: 0px; padding: 0px; align-items:normal; ">
@@ -437,7 +437,7 @@
       </div>
       <form class="right-align" method="post" action="/save_image">
         <div>
-          <input type="hidden" id="selected_image" name="selected_image" value="">
+          <input type="hidden" id="selected_image" name="selected_image" value="{{ id }}">
           <input type="submit" id="again" value="다시 만들기" name="action1" />
           <input type="submit" id="make" value="이 컷으로 만들기" name="action2" />
         </div>
