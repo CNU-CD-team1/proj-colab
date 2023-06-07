@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Enter Title</title>
+  <title>AIDrawing Post</title>
+
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <!-- ##### CSS ##### -->
@@ -248,7 +249,7 @@
   <!-- ##### Navbar Start #####  -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand" href="#page-top"><img src="../static/images/logo.png" alt="..." /></a>
+      <a class="navbar-brand" href="/"><img src="../static/images/logo.png" alt="..." /></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
@@ -260,7 +261,7 @@
             <a class="nav-link" href="drawing">Drawing</a>
           </li>
           <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
-            <a class="nav-link" href="gallery">Gallery</a>
+            <a class="nav-link" href="gallery_ing">Gallery</a>
           </li>
           <li class="nav-item"><img src="../static/images/list.png" class="ul-li-icon">
             <a class="nav-link" href="#">MyPage</a>
@@ -306,7 +307,7 @@
   <div class="center-line">
     <div style="width:70%;">
       <div class="title">
-        {{ selected_post }} title {{ votes }}
+        {{ id }} 제목 : {{ title }}
       </div>
     </div>
   </div>
@@ -321,17 +322,18 @@
       <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
         <div class="img" style="width:85%; text-align:center;">
           <!-- 컷 -->
-          <img src="{{ images[i]|default(url_for('static', filename='images/default.png', _external=True)) }}"
+          <img src="data:image/png;base64,{{ images[i]|b64encode }}"
             style="width: 100%;" onclick="dis()">
           <!-- 컷 설명  -->
           <div class="imgExplain" style="width: 100%; height:120px; margin-top:5px;">
-            {{ prompts[i] }}
+            {{ scripts[i] }}
+          <!-- prompts[i]값은 hover했을때 보여주고/ 설명창은 cut내용(cut_script) 들어가야함 -->
           </div>
         </div>
       </div>
       {% endfor %}
 
-      {% if images|length < 3 %} {% for i in range(3 - image|length) %} <div class="col-md d-flex center-line"
+      {% if images|length < 3 %} {% for i in range(3 - images|length) %} <div class="col-md d-flex center-line"
         style="margin: 0px; padding: 0px;">
         <div class="img" style="width:85%; text-align:center;">
           <!-- 컷 -->
