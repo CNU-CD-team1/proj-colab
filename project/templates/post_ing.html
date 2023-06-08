@@ -142,21 +142,6 @@
     font-size: 150%;
   }
 
-  /* 컷 이미지 및 컷 설명 텍스트 창 설정 */
-  .img img {
-    border: 2px solid #FFE4B5;
-    border-radius: 5px;
-  }
-
-  .imgExplain {
-    border-radius: 5px;
-    border: 2px solid #FFE4B5;
-    background-color: rgb(247, 247, 247);
-    padding: 5px;
-    font-family: 'SUITE-Regular';
-    text-align: initial;
-  }
-
   /* 경쟁작 부분 */
   .competitionPart {
     width: 82%;
@@ -242,6 +227,74 @@
     text-align: left;
     padding-left: 10px;
   }
+
+  /* 이미지 프롬프트 설정 스타일 */
+  @font-face {
+    font-family: 'SUITE-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .prev_cut_explain {
+    font-family: 'SUITE-Regular';
+    font-size: 15px;
+  }
+
+  .imageText {
+    width: 100%;
+    height: 100%;
+    background-color: #dfedff;
+    text-align: center;
+    align-items: center;
+    user-select: text;
+    border: 1px solid #e0e0e0;
+    padding: 0px;
+    margin: 0px;
+    color: #3e3e3e;
+    font-size: 14px;
+    font-family: 'SUITE-Regular';
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    align-items: center;
+    display: inline-block;
+    z-index: 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+  .img {
+    position: relative;
+    width: 100%;
+    display: inline-block;
+  }
+
+  .img img {
+    width: 100%;
+    height: auto;
+    border: 2px solid #FFE4B5;
+    border-radius: 5px;
+  }
+
+
+  .imgExplain {
+    border-radius: 5px;
+    border: 2px solid #FFE4B5;
+    background-color: rgb(247, 247, 247);
+    padding: 5px;
+    font-family: 'SUITE-Regular';
+    text-align: initial;
+    overflow: hidden;
+    /* 텍스트가 넘치는 부분을 감추기 위해 오버플로우를 숨김 처리합니다 */
+    text-overflow: ellipsis;
+    /* 텍스트가 넘칠 경우 말줄임표(...)를 표시합니다 */
+    white-space: normal;
+    /* 텍스트 줄 바꿈을 위해 줄 바꿈 문자를 유지하고 공백을 보존합니다 */
+  }
+
 </style>
 
 <body>
@@ -314,20 +367,26 @@
   <!-- 제목 끝 -->
 
   <br>
-
+  <p class="center-line prev_cut_explain" style="margin-bottom:0px;"> 마우스를 올려서 컷을 생성한 텍스트를 참고해보세요 ! </p>
   <div class="container center-line" style="width:75%;">
     <div class="row justify-content-between">
       {% for i in range(images|length) %}
       <!-- 컷 이미지 및 컷 설명창 & 다음그림 그리기-->
       <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
-        <div class="img" style="width:85%; text-align:center;">
-          <!-- 컷 -->
-          <img src="data:image/png;base64,{{ images[i]|b64encode }}" style="width: 100%;" onclick="dis()">
+        <div style="width:85%; text-align:center;">
+          <div class="img" style="width:100%;">
+            <div>
+              <img src="data:image/png;base64,{{ images[i]|b64encode }}" style="width: 100%; height: auto;"
+                onclick="dis()" onmouseover="showText(this)" onmouseout="hideText(this)">
+              <div class="imageText" draggable="true" onmouseover="showText(this)" onmouseout="hideText(this)"> {{ prompts[i] }}</div>
+            </div>
+          </div>
           <!-- 컷 설명  -->
-          <div class="imgExplain" style="width: 100%; height:120px; margin-top:5px;">
+          <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
             {{ scripts[i] }}
             <!-- prompts[i]값은 hover했을때 보여주고/ 설명창은 cut내용(cut_script) 들어가야함 -->
           </div>
+          <!-- 컷 -->
         </div>
       </div>
       {% endfor %}
@@ -338,31 +397,64 @@
           <!-- 컷 -->
           <img src="../static/images/default.png" style="width: 100%;" onclick="dis()">
           <!-- 컷 설명  -->
-          <div class="imgExplain" style="width: 100%; height:120px; margin-top:5px;">
-            해당 컷의 프롬프트값
+          <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
+            다음 컷을 그리고 싶다면 우측의 <b><i>+ 버튼</i></b>을 눌러주세요!
           </div>
         </div>
     </div>
     {% endfor %}
     {% endif %}
+    <!-- ##### 네번째 컷은 픽스가 안됨 따라서, 이미지 클릭했을 때 경쟁작컷을 보여줄 수 있다는 문구, 
+        이미지 hover했을때 프롬프트값 보여줄 수 있다는 문구 넣으면 어떨까요..? -->
+    <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
+      <div class="img" style="width:85%; text-align:center;">
+        <!-- 컷 -->
+        <img src="../static/images/default.png" style="width: 100%;" onclick="dis()">
+        <!-- 컷 설명  -->
+        <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
+          탈락컷 또는 현재 진행중인 경쟁컷들을 보고싶다면 해당 컷의 이미지를 눌러주세요!
+        </div>
+      </div>
+    </div>
 
     <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
       <div class="img" style="width:85%; text-align:center;">
         <!-- ########## Next Drawing ########## -->
         <form action="/next_drawing" method="post">
-          <button type="submit" onclick="location.href='next_drawing';" style="border:none;">
-            <img src="../static/images/plus.png" style="width:100%;">
+          <button type="submit" onclick="location.href='next_drawing';"
+            style="border:none; width:100%; height:auto; padding:0px;">
+            <img src="../static/images/plus.png" style="width:100%; height:auto; padding:0px;">
           </button>
-          <input type = "hidden" name ="selected_post" value ="{{ id }}">
+          <input type="hidden" name="selected_post" value="{{ id }}">
         </form>
         <!-- 버튼 설명  -->
-        <div class="imgExplain" style="width: 100%; height:120px; margin-top:5px;">
+        <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
           이어갈 그림을 그리고 싶다면 위의 '+' 버튼을 눌러주세요.
         </div>
       </div>
     </div>
   </div>
   </div>
+  <script>
+    function showText(element) {
+        var showelement = element.parentNode.querySelector(".imageText");
+        if (showelement) {
+            showelement.style.visibility = "visible";
+            showelement.style.opacity = "1";
+            
+        }
+    }
+
+    function hideText(element) {
+        var showelement = element.parentNode.querySelector(".imageText");
+        if (showelement) {
+            showelement.style.opacity = "0";
+            showelement.style.visibility = "hidden";
+            
+            
+        }
+    }
+</script>
 
   <br>
 
