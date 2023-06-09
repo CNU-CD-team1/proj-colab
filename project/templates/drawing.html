@@ -182,7 +182,6 @@
       border: solid 2px #fce66b;
       background-color: #ffedcf;
     }
-    
   </style>
 
   <script>
@@ -343,7 +342,7 @@
           placeholder="생성할 이미지에 대한 텍스트를 입력하세요." style="width:95%;">
       </div>
       <div class="col-auto">
-        <button type="submit" id="imgsub" value="Submit">
+        <button type="submit" id="imgsub" value="Submit" onclick="disableButton()">
           이미지 생성
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brush"
             viewBox="0 0 16 16">
@@ -374,11 +373,11 @@
     <div class="row">
       <div class="col">
       </div>
-            <!-- ##### 이미지 불러오기 및 선택한 이미지 저장 ##### -->
+      <!-- ##### 이미지 불러오기 및 선택한 이미지 저장 ##### -->
       <form class="right-align" method="post" action="/save_image_first">
         <div>
           <input type="hidden" id="selected_image" name="selected_image" value="">
-          <input type="submit" id="again" value="다시 만들기" name="action1" />
+          <input type="button" id="again" value="다시 만들기" onclick="enableButtons()" />
           <input type="submit" id="make" value="이 컷으로 만들기" name="action2" />
         </div>
       </form>
@@ -388,6 +387,22 @@
         <br>
         <br>
       </div>
+
+      <script>
+        // 이미지생성 버튼 활성화 코드
+        function disableButton() {
+          document.getElementById("imgsub").disabled = true;
+          document.getElementById("imgsub").style.border = "solid 5px #37afa5";
+          document.getElementById("imgsub").style.backgroundColor = "#37afa5";
+        }
+
+        // 이미지생성 버튼 비활성화 코드
+        function enableButtons() {
+          document.getElementById("imgsub").disabled = false;
+          document.getElementById("imgsub").style.border = "solid 5px #63dad0";
+          document.getElementById("imgsub").style.backgroundColor = "#63dad0";
+        }
+      </script>
     </div>
   </div>
 
