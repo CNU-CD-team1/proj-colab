@@ -134,6 +134,11 @@
       background-color: #fce66b;
       color: #fff;
     }
+
+    /* 갤러리 이미지 창 커서 -> 손모양으로 바꿈 */
+    .custom-cursor {
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -210,7 +215,7 @@
         <div style="text-decoration: none; color: black;">
           <form action="/post_ing" method="get" onclick="this.submit();">
             <input type="hidden" name="selected_post" value="{{ids[i]}}">
-            <img src="data:image/png;base64,{{ images[i]|b64encode }}" alt="Image" class="card-img-top"
+            <img src="data:image/png;base64,{{ images[i]|b64encode }}" alt="Image" class="card-img-top custom-cursor"
               style="margin-top: 10px;" onclick="location.href='post_ing?selected_post={{ids[i]}}'">
             <div class="card-text">
               <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p>
