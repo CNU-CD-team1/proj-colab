@@ -372,12 +372,13 @@
     <div class="row justify-content-between">
       {% for i in range(images|length) %}
       <!-- 컷 이미지 및 컷 설명창 & 다음그림 그리기-->
+      {% if i == 0 %}
       <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
         <div style="width:85%; text-align:center;">
           <div class="img" style="width:100%;">
             <div>
               <img src="data:image/png;base64,{{ images[i]|b64encode }}" style="width: 100%; height: auto;"
-                onclick="dis()" onmouseover="showText(this)" onmouseout="hideText(this)">
+                onmouseover="showText(this)" onmouseout="hideText(this)">
               <div class="imageText" draggable="true" onmouseover="showText(this)" onmouseout="hideText(this)"> {{ prompts[i] }}</div>
             </div>
           </div>
@@ -389,6 +390,25 @@
           <!-- 컷 -->
         </div>
       </div>
+      {% else %}
+      <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
+        <div style="width:85%; text-align:center;">
+          <div class="img" style="width:100%;">
+            <div>
+              <img src="data:image/png;base64,{{ images[i]|b64encode }}" style="width: 100%; height: auto;"
+                onclick="dis({{ orders[i] }})" onmouseover="showText(this)" onmouseout="hideText(this)">
+              <div class="imageText" draggable="true" onmouseover="showText(this)" onmouseout="hideText(this)"> {{ prompts[i] }}</div>
+            </div>
+          </div>
+          <!-- 컷 설명  -->
+          <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
+            {{ scripts[i] }}
+            <!-- prompts[i]값은 hover했을때 보여주고/ 설명창은 cut내용(cut_script) 들어가야함 -->
+          </div>
+          <!-- 컷 -->
+        </div>
+      </div>
+      {% endif %}
       {% endfor %}
 
       {% if images|length < 3 %} {% for i in range(3 - images|length) %} <div class="col-md d-flex center-line"
@@ -461,7 +481,8 @@
   <!-- 이미지 클릭시 경쟁작 show/hide -->
   <!-- 클릭한 컷의 id에 따라 경쟁작 보여주기.. -->
   <script>
-    function dis() {
+    function dis(cut_order) {
+      console.log(cut_order);
       if ($('.competitionPart').css('display') == 'none') {
         $('.competitionPart').show();
       } else {
