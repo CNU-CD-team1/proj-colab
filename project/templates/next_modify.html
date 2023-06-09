@@ -357,32 +357,30 @@
 
 
   <!-- ##### 이전 컷 바 ##### -->
-  <p class="center-line prev_cut_explain" style="margin-bottom:0px;">마우스를 올려서 이전 컷을 생성한 텍스트를 참고해보세요 ! </p>
+  <p class="center-line prev_cut_explain" style="margin-bottom:0px;"> {{ id }} : 마우스를 올려서 이전 컷을 생성한 텍스트를 참고해보세요 ! </p>
   <div class="container center-line" style="margin-top:0px; align-items:normal;">
     <!-- ##### 이전 컷 ##### -->
     <div class="row  center-line" style="width: 43%; margin: 0px; padding: 0px; align-items:normal; ">
+      {% for i in range(images|length) %}
       <div class="col card col-4 mb-4"
         style=" width: 150px; height:150px; margin: 10px; padding:3px; align-items: center;">
-        <img src="../static/images/default.png" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
-          onmouseout="hideText(this)">
-        <p class="imageText" draggable="true" style="display: none;">이전 컷을 생성한 텍스트1</p>
-
+          <img src="data:image/png;base64,{{ images[i]|b64encode }}" width="100%" alt="Image"
+              class="prevImage" onmouseover="showText(this)" onmouseout="hideText(this)">
+            <p class="imageText" draggable="true" style="display: none; width: 140px; height: 140px;">
+              {{ scripts[i] }}</p>
       </div>
-      <div class="col card col-4 mb-4"
+      {% endfor %}
+
+      {% if images|length < 3 %} {% for i in range(3 - images|length) %} <div class="col card col-4 mb-4"
         style=" width: 150px; height:150px; margin: 10px; padding:3px;  align-items: center;">
         <img src="../static/images/default.png" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
           onmouseout="hideText(this)">
-        <p class="imageText" draggable="true" style="display: none;">이전 컷을 생성한 텍스트2</p>
-
-      </div>
-      <div class="col card col-4 mb-4"
-        style=" width: 150px; height:150px; margin: 10px; padding:3px;  align-items: center;">
-        <img src="../static/images/default.png" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
-          onmouseout="hideText(this)">
-        <p class="imageText" draggable="true" style="display: none;">이전 컷을 생성한 텍스트3</p>
-
-      </div>
+        <p class="imageText" draggable="true" style="display: none;"> 컷 설명 </p>
     </div>
+    {% endfor %}
+    {% endif %}
+
+  </div>
   </div>
   <!-- #### 이전컷 마우스 이벤트 #### -->
   <script>
@@ -500,7 +498,7 @@
 
   <div>
     <!-- 클릭한 작품(post)의 id에 따른 title 보여주기 -->
-    <h3><p style="text-align: center;"> Title123 </p></h3> 
+    <h3><p style="text-align: center;"> {{ id }} 제목 : {{ title }} </p></h3> 
   </div>
 
   <div id="wrap">
@@ -514,7 +512,7 @@
         <!-- post의 title 받아오기 -->
         <!-- action/ name 수정 -->
         <!-- ##### 다음 컷설명 저장 ##### -->
-        <form method="post" action="/save_detail_nth">
+        <form method="post" action="/save_detail_next">
           <!-- 컷 설명 프롬프트창 -->
           <div id="story">
             <label for="S"></label>
@@ -522,7 +520,7 @@
           </div>
           <!-- 컷 생성 버튼 (생성된 작품id-제목 저장, 작품id-컷1에 대한 설명 저장) -->
           <div id="btnSave">
-            <input type="submit" name="action3" value="S A V E">
+            <input type="submit" name="save_script" value="S A V E">
           </div>
         </form>
       </div>

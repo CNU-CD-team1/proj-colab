@@ -22,6 +22,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
     crossorigin="anonymous"></script>
+
   <style>
     /*제목 입력창 크기 설정 */
     #inputTitle {
@@ -201,7 +202,22 @@
       border: solid 2px #fce66b;
       background-color: #ffedcf;
     }
-    
+
+    /* ##### 라디오버튼 ##### */
+    .radio_bu {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .radio_bu input[type=radio]+label {
+      cursor: pointer;
+    }
+
+    input[type=radio]:checked+label {
+      outline: 5px solid rgb(154, 240, 255);
+    }
   </style>
 
   <script>
@@ -258,7 +274,9 @@
 
   <br>
 
-
+  <form class="mb-3 row center-line" action="/submit-caption" method="POST">
+    <input type="hidden" name="post_id" value="{{ id }}">
+    <input type="hidden" name="for_cut_order" value="{{ images|length }}">
   <!-- ##### 이전 컷 바 ##### -->
   <p class="center-line prev_cut_explain" style="margin-bottom:0px;"> {{ id }} : 마우스를 올려서 이전 컷을 생성한 텍스트를 참고해보세요 ! </p>
   <div class="container center-line" style="margin-top:0px; align-items:normal;">
@@ -267,23 +285,26 @@
       {% for i in range(images|length) %}
       <div class="col card col-4 mb-4"
         style=" width: 150px; height:150px; margin: 10px; padding:3px; align-items: center;">
-        <img src="data:image/png;base64,{{ images[i]|b64encode }}" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
-          onmouseout="hideText(this)">
-        <p class="imageText" draggable="true" style="display: none;"> {{ prompts[i] }}</p>
+        <!--<form action="/get-seed" method="post" onclick="this.submit()" id="form1">-->
+          <input id="ra_bu" type="radio" name="seed" value="{{seeds[i]}}" class="radio_bu">
+          <label for="ra_bu"><img src="data:image/png;base64,{{ images[i]|b64encode }}" width="100%" alt="Image"
+              class="prevImage" onmouseover="showText(this)" onmouseout="hideText(this)">
+            <p class="imageText" draggable="true" style="display: none; width: 140px; height: 140px;">
+              {{ prompts[i] }}</p>
+          </label>
       </div>
       {% endfor %}
 
-      {% if images|length < 3 %} {% for i in range(3 - images|length) %}
-      <div class="col card col-4 mb-4"
+      {% if images|length < 3 %} {% for i in range(3 - images|length) %} <div class="col card col-4 mb-4"
         style=" width: 150px; height:150px; margin: 10px; padding:3px;  align-items: center;">
         <img src="../static/images/default.png" width="100%" alt="Image" class="prevImage" onmouseover="showText(this)"
           onmouseout="hideText(this)">
         <p class="imageText" draggable="true" style="display: none;"> 이전 컷을 생성한 텍스트 </p>
-      </div>
-      {% endfor %}
-      {% endif %}
-
     </div>
+    {% endfor %}
+    {% endif %}
+
+  </div>
   </div>
   <!-- #### 이전컷 마우스 이벤트 #### -->
   <script>
@@ -397,7 +418,7 @@
     </script>
   </div>
   <br>
-  <form class="mb-3 row center-line" action="/submit-caption" method="POST">
+  <!--<form class="mb-3 row center-line" action="/submit-caption" method="POST">-->
     <div class="col-4">
       <input type="text" name='caption-input' class="form-control" id="inputPassword2"
         placeholder="생성할 이미지에 대한 텍스트를 입력하세요.">
@@ -438,6 +459,7 @@
         <div>
           <input type="hidden" id="selected_image" name="selected_image" value="">
           <input type="hidden" name="post_id" value="{{ id }}">
+          <input type="hidden" name="for_cut_order" value="{{ order }}">
           <input type="submit" id="again" value="다시 만들기" name=".." />
           <input type="submit" id="make" value="이 컷으로 만들기" name="select_button" />
         </div>
@@ -445,6 +467,10 @@
       <!-- ########## form태그  ##########-->
       <div class="col">
         <br>
+        <div id="reorder">
+        받아온 id : {{ id }}
+        받아온 order : {{ order }}
+        </div>
         <br>
         <br>
         <br>
