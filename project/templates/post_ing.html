@@ -145,6 +145,9 @@
   /* 경쟁작 부분 */
   .competitionPart {
     width: 82%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .competitionImg {
@@ -264,7 +267,7 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease;
-}
+  }
 
   .img {
     position: relative;
@@ -295,6 +298,10 @@
     /* 텍스트 줄 바꿈을 위해 줄 바꿈 문자를 유지하고 공백을 보존합니다 */
   }
 
+  .font {
+    font-family: 'SUITE-Regular';
+    font-size: 18px;
+  }
 </style>
 
 <body>
@@ -368,6 +375,7 @@
 
   <br>
   <p class="center-line prev_cut_explain" style="margin-bottom:0px;"> 마우스를 올려서 컷을 생성한 텍스트를 참고해보세요 ! </p>
+
   <div class="container center-line" style="width:75%;">
     <div class="row justify-content-between">
       {% for i in range(images|length) %}
@@ -379,7 +387,8 @@
             <div>
               <img src="data:image/png;base64,{{ images[i]|b64encode }}" style="width: 100%; height: auto;"
                 onmouseover="showText(this)" onmouseout="hideText(this)">
-              <div class="imageText" draggable="true" onmouseover="showText(this)" onmouseout="hideText(this)"> {{ prompts[i] }}</div>
+              <div class="imageText" draggable="true" onmouseover="showText(this)" onmouseout="hideText(this)"> {{
+                prompts[i] }}</div>
             </div>
           </div>
           <!-- 컷 설명  -->
@@ -397,7 +406,8 @@
             <div>
               <img src="data:image/png;base64,{{ images[i]|b64encode }}" style="width: 100%; height: auto;"
                 onclick="dis({{ orders[i] }})" onmouseover="showText(this)" onmouseout="hideText(this)">
-              <div class="imageText" draggable="true" onmouseover="showText(this)" onmouseout="hideText(this)"> {{ prompts[i] }}</div>
+              <div class="imageText" draggable="true" onmouseover="showText(this)" onmouseout="hideText(this)" onclick="dis({{i+1}})"> {{
+                prompts[i] }}</div>
             </div>
           </div>
           <!-- 컷 설명  -->
@@ -411,25 +421,39 @@
       {% endif %}
       {% endfor %}
 
-      {% if images|length < 3 %} {% for i in range(3 - images|length) %} <div class="col-md d-flex center-line"
-        style="margin: 0px; padding: 0px;">
+      {% if images|length < 3 %} 
+      {% for i in range(3 - images|length) %} 
+      <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
+        {% if i == 0 %} 
         <div class="img" style="width:85%; text-align:center;">
           <!-- 컷 -->
-          <img src="../static/images/default.png" style="width: 100%;" onclick="dis()">
+          <img src="../static/images/default.png" style="width: 100%;">
           <!-- 컷 설명  -->
           <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
             다음 컷을 그리고 싶다면 우측의 <b><i>+ 버튼</i></b>을 눌러주세요!
           </div>
         </div>
+        {% endif %} 
+        {% if i == 1 %} 
+        <div class="img" style="width:85%; text-align:center;">
+          <!-- 컷 -->
+          <img src="../static/images/default.png" style="width: 100%;" >
+          <!-- 컷 설명  -->
+          <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
+            다음 컷을 그리고 싶다면 우측의 <b><i>+ 버튼</i></b>을 눌러주세요!
+          </div>
+        </div>
+        {% endif %} 
     </div>
     {% endfor %}
     {% endif %}
+
     <!-- ##### 네번째 컷은 픽스가 안됨 따라서, 이미지 클릭했을 때 경쟁작컷을 보여줄 수 있다는 문구, 
         이미지 hover했을때 프롬프트값 보여줄 수 있다는 문구 넣으면 어떨까요..? -->
     <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
       <div class="img" style="width:85%; text-align:center;">
         <!-- 컷 -->
-        <img src="../static/images/default.png" style="width: 100%;" onclick="dis()">
+        <img src="../static/images/default.png" style="width: 100%;" onclick="dis(4)">
         <!-- 컷 설명  -->
         <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
           탈락컷 또는 현재 진행중인 경쟁컷들을 보고싶다면 해당 컷의 이미지를 눌러주세요!
@@ -455,26 +479,24 @@
     </div>
   </div>
   </div>
+
   <script>
     function showText(element) {
-        var showelement = element.parentNode.querySelector(".imageText");
-        if (showelement) {
-            showelement.style.visibility = "visible";
-            showelement.style.opacity = "1";
-            
-        }
+      var showelement = element.parentNode.querySelector(".imageText");
+      if (showelement) {
+        showelement.style.visibility = "visible";
+        showelement.style.opacity = "1";
+      }
     }
 
     function hideText(element) {
-        var showelement = element.parentNode.querySelector(".imageText");
-        if (showelement) {
-            showelement.style.opacity = "0";
-            showelement.style.visibility = "hidden";
-            
-            
-        }
+      var showelement = element.parentNode.querySelector(".imageText");
+      if (showelement) {
+        showelement.style.opacity = "0";
+        showelement.style.visibility = "hidden";
+      }
     }
-</script>
+  </script>
 
   <br>
 
@@ -483,118 +505,198 @@
   <script>
     function dis(cut_order) {
       console.log(cut_order);
-      if ($('.competitionPart').css('display') == 'none') {
-        $('.competitionPart').show();
+
+      if (parseInt(cut_order) === 2) {
+        // cut_order가 1인 경우에 대한 동작 (2번째 컷 경쟁작)
+        if ($('.competitionPart2').css('display') == 'none') {
+          $('.competitionPart2').show();
+          $('.competitionPart3').hide();
+          $('.competitionPart4').hide();
+        } else {
+          $('.competitionPart2').hide();
+        }
+      } else if (parseInt(cut_order) === 3) {
+        // cut_order가 2인 경우에 대한 동작 (3번째 컷 경쟁작)
+        if ($('.competitionPart3').css('display') == 'none') {
+          $('.competitionPart3').show();
+          $('.competitionPart2').hide();
+          $('.competitionPart4').hide();
+        } else {
+          $('.competitionPart3').hide();
+        }
       } else {
-        $('.competitionPart').hide();
+        // 마지막 컷 경쟁작
+        if ($('.competitionPart4').css('display') == 'none') {
+          $('.competitionPart4').show();
+          $('.competitionPart2').hide();
+          $('.competitionPart3').hide();
+        } else {
+          $('.competitionPart4').hide();
+        }
       }
     }
   </script>
 
   <!-- ###### 경쟁작 시작 부분 ###### -->
-  <div class="container center-line competitionPart" display='none'>
-    <div class="row">
-      <div class="col-3 competitionCut">
-        <a href="#postid" style="text-decoration: none; color:black;">
-          <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
-          <div class="card-text">
-            <p class="postName"> title </p>
+
+  <!-- ###### cut_order가 2인경우 ###### -->
+  <div class="competitionPart2 comepetitionPart"  style="display:none; float:none;">
+    <h6 class="font" style="display:block; text-align:center;">2번째 컷에 대한 경쟁작 or 탈락작</h6>
+    <div class="center-line">
+      <div class="container center-line">
+        <div class="row">
+          {% for i in range(image2|length) %}
+          <div class="col-3 competitionCut">
+            <a style="text-decoration: none; color:black;">
+              <img class="card-img-top competitionImg" src="data:image/png;base64,{{ image2[i]|b64encode }}" alt="Image">
+              <div class="card-text">
+                <p class="cutScript"> 컷 설명 : {{ script2[i] }} </p>
+                <p class="cutPrompt"> 입력 값 : {{ prompt2[i] }} </p>
+              </div>
+            </a>
+            <br><br>
+            <div class="heart-icon">
+              <i class="bi bi-heart" data-cut-id="{{ cutId2[i] }}"></i>
+              <i class="result" data-cut-id="{{ cutId2[i] }}"> {{ vote2[i] }} </i>    
+            </div>
           </div>
-        </a>
-        <div class="heart-icon">
-          <i class="bi bi-heart"></i>
-          <i class="result"> votes </i>
+          {% endfor %}
         </div>
-
       </div>
-
-      <div class="col-3 competitionCut">
-        <a href="#postid" style="text-decoration: none; color:black;">
-          <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
-          <div class="card-text">
-            <p class="postName"> title </p>
-          </div>
-        </a>
-        <div class="heart-icon">
-          <i class="bi bi-heart"></i>
-          <i class="result"> votes </i>
-        </div>
-
-
-      </div>
-
-      <div class="col-3 competitionCut">
-        <a href="#postid" style="text-decoration: none; color:black;">
-          <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
-          <div class="card-text">
-            <p class="postName"> title </p>
-          </div>
-        </a>
-        <div class="heart-icon">
-          <i class="bi bi-heart"></i>
-          <i class="result"> votes </i>
-        </div>
-
-
-      </div>
-
-      <div class="col-3 competitionCut">
-        <a href="#postid" style="text-decoration: none; color:black;">
-          <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
-          <div class="card-text">
-            <p class="postName"> title </p>
-          </div>
-        </a>
-        <div class="heart-icon">
-          <i class="bi bi-heart"></i>
-          <i class="result"> votes </i>
-        </div>
-
-
-      </div>
-
-      <div class="col-3 competitionCut">
-        <a href="#postid" style="text-decoration: none; color:black;">
-          <img class="card-img-top competitionImg" src="../static/images/default.png" alt="Image">
-          <div class="card-text">
-            <p class="postName"> title </p>
-          </div>
-        </a>
-        <div class="heart-icon">
-          <i class="bi bi-heart"></i>
-          <i class="result"> votes </i>
-        </div>
-
-        <!-- ##### 하트 아이콘 ##### -->
-
-        <script>
-          var i = 0;
-          $('.bi-heart').on('click', function () {
-            // 결과를 표시할 element
-            const resultElement = document.getElementsByClassName('result');
-            // 현재 화면에 표시된 값
-            let number = resultElement.innerText;
-            if (i == 0) {
-              $(this).removeClass('bi-heart');
-              $(this).addClass('bi-heart-fill');
-              number = parseInt(number) + 1;
-              i++;
-            } else if (i == 1) {
-              $(this).removeClass('bi-heart-fill');
-              $(this).addClass('bi-heart');
-              number = parseInt(number) - 1;
-              i--;
-            }
-            resultElement.innerText = number;
-          });
-        </script>
-
-
-      </div>
-
     </div>
   </div>
+  
+  
+
+    <!-- ###### cut_order가 3인경우 ###### -->
+    <div class="competitionPart3 comepetitionPart"  style="display:none; float:none;">
+      <h6 class="font" style="display:block; text-align:center;">3번째 컷에 대한 경쟁작 or 탈락작</h6>
+      <div class="center-line">
+        <div class="container center-line">
+          <div class="row">
+            {% for i in range(image3|length) %}
+            <div class="col-3 competitionCut">
+              <a style="text-decoration: none; color:black;">
+                <img class="card-img-top competitionImg" src="data:image/png;base64,{{ image3[i]|b64encode }}" alt="Image">
+                <div class="card-text">
+                  <p class="cutScript"> 컷 설명 : {{ script3[i] }} </p>
+                  <p class="cutPrompt"> 입력 값 : {{ prompt3[i] }} </p>
+                </div>
+              </a>
+              <br><br>
+              <div class="heart-icon">
+                <i class="bi bi-heart" data-cut-id="{{ cutId3[i] }}"></i>
+                <i class="result" data-cut-id="{{ cutId3[i] }}"> {{ vote3[i] }} </i>
+    
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+    </div>
+      
+
+
+    <!-- ###### cut_order가 4인경우 ###### -->
+    <div class="competitionPart4 comepetitionPart"  style="display:none; float:none;">
+      <h6 class="font" style="display:block; text-align:center;">4번째 컷에 대한 경쟁작 or 탈락작</h6>
+      <div class="center-line">
+        <div class="container center-line">
+          <div class="row">
+            {% for i in range(image4|length) %}
+            <div class="col-3 competitionCut">
+              <a style="text-decoration: none; color:black;">
+                <img class="card-img-top competitionImg" src="data:image/png;base64,{{ image4[i]|b64encode }}" alt="Image">
+                <div class="card-text">
+                  <p class="cutScript"> 컷 설명 : {{ script4[i] }} </p>
+                  <p class="cutPrompt"> 입력 값 : {{ prompt4[i] }} </p>
+                </div>
+              </a>
+              <br><br>
+              <div class="heart-icon">
+                <i class="bi bi-heart" data-cut-id="{{ cutId4[i] }}"></i>
+                <i class="result" data-cut-id="{{ cutId4[i] }}"> {{ vote4[i] }} </i>    
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
   <!-- ###### 경쟁작 끝난 부분 ###### -->
+
+
+
+
+
+
+  <!-- ##### 하트 아이콘 ##### -->
+  <!-- ##### 투표  함수 ##### -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  $(document).ready(function () {
+    $(document).on('click', '.bi', function () {
+      var icon = $(this);
+
+      var cutId = icon.data('cut-id');
+      var voteCountElement = icon.siblings('.result[data-cut-id="' + cutId + '"]');
+      var voteCount = parseInt(voteCountElement.text());
+
+      if (icon.hasClass('bi-heart-fill')) {
+        // 이미 투표가 눌려있는 경우
+        unVoteCut(cutId, function (response) {
+          if (response.success) {
+            icon.removeClass('bi-heart-fill');
+            icon.addClass('bi-heart');
+            voteCount--;
+            voteCountElement.text(voteCount);
+          }
+        });
+      } else {
+        // 투표를 누르지 않은 상태였던 경우
+        voteCut(cutId, function (response) {
+          if (response.success) {
+            icon.removeClass('bi-heart');
+            icon.addClass('bi-heart-fill');
+            voteCount++;
+            voteCountElement.text(voteCount);
+          }
+        });
+      }
+    });
+
+    function voteCut(cutId, callback) {
+      $.ajax({
+        url: '/vote',
+        method: 'POST',
+        data: {
+          cut_id: cutId
+        },
+        success: function (response) {
+          callback(response);
+        }
+      });
+    }
+
+    function unVoteCut(cutId, callback) {
+      $.ajax({
+        url: '/unVote',
+        method: 'POST',
+        data: {
+          cut_id: cutId
+        },
+        success: function (response) {
+          callback(response);
+        }
+      });
+    }
+  });
+</script>
+  <!-- ##### 하트 아이콘 ##### -->
 
 
   <br>
