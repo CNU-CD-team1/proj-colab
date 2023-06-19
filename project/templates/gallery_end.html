@@ -3,7 +3,7 @@
 
 <head>
   <title>Image Gallery</title>
-  <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <!--<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
@@ -133,20 +133,14 @@
       background-color: #fce66b;
       color: #fff;
     }
-
-    /* 갤러리 이미지 창 커서 -> 손모양으로 바꿈 */
-    .custom-cursor {
-      cursor: pointer;
-    }
   </style>
 </head>
 
-<body id="page-top">
-  <!-- ##### Header Start #####  -->
+<body>
   <!-- ##### Navbar Start #####  -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="margin: 0px; padding: 0px;">
     <div class="container">
-      <a class="navbar-brand" href="/"><img src="../static/images/logo.png" alt="..." /></a>
+      <a class="navbar-brand" href="#page-top"><img src="../static/images/logo.png" alt="..." /></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
         aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
@@ -210,40 +204,85 @@
       {% for i in range(ids|length) %}
       <div class="col card col-3 mb-4" style=" width: 250px; margin: 20px;">
         <a style="text-decoration: none; color: black;">
-          <img src="data:image/png;base64,{{ images[i]|b64encode }}" alt="Image" class="card-img-top custom-cursor"
-            style="margin-top: 10px;">
+          <form action="/post_end" method="get" onclick="this.submit();">
+            <input type = "hidden" name ="selected_post" value ="{{ids[i]}}">
+          <img src="data:image/png;base64,{{ images[i]|b64encode }}" alt="Image" class="card-img-top"
+            style="margin-top: 10px;" onclick="location.href='post_end?selected_post={{ids[i]}}'">
           <div class="card-text">
-            <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p> <!-- ids[i] 아이디 값으로 클릭했을 떄 보내주는 것-->
+            <p class="postName">{{ ids[i] | string + "_" + titles[i] }}</p>
           </div>
+          </form>
           <!-- ##### 하트 아이콘 ##### -->
-          <i class="bi bi-heart"></i>
-          <i class='result'> {{ likes[i] }} </i>
-          <script>
-            var i = 0;
-            $('.bi-heart').on('click', function () {
-              // 결과를 표시할 element
-              const resultElement = document.getElementsByClassName('result');
-              // 현재 화면에 표시된 값
-              let number = resultElement.innerText;
-              if (i == 0) {
-                $(this).removeClass('bi-heart');
-                $(this).addClass('bi-heart-fill');
-                number = parseInt(number) + 1;
-                i++;
-              } else if (i == 1) {
-                $(this).removeClass('bi-heart-fill');
-                $(this).addClass('bi-heart');
-                number = parseInt(number) - 1;
-                i--;
-              }
-              resultElement.innerText = number;
-            });
-          </script>
+          <i class="bi bi-heart" data-post-id="{{ ids[i] }}"></i>
+          <span class="result" data-post-id="{{ ids[i] }}">{{ likes[i] }}</span>
         </a>
       </div>
       {% endfor %}
     </div>
   </div>
+
+  <!-- ##### 좋아요 함수 ##### -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  $(document).ready(function () {
+    $(document).on('click', '.bi', function () {
+      var icon = $(this);
+
+      var postId = icon.data('post-id');
+      var likeCountElement = icon.siblings('.result[data-post-id="' + postId + '"]');
+      var likeCount = parseInt(likeCountElement.text());
+
+      if (icon.hasClass('bi-heart-fill')) {
+        // 이미 좋아요가 눌려있는 경우
+        unlikePost(postId, function (response) {
+          if (response.success) {
+            icon.removeClass('bi-heart-fill');
+            icon.addClass('bi-heart');
+            likeCount--;
+            likeCountElement.text(likeCount);
+          }
+        });
+      } else {
+        // 좋아요를 누르지 않은 경우
+        likePost(postId, function (response) {
+          if (response.success) {
+            icon.removeClass('bi-heart');
+            icon.addClass('bi-heart-fill');
+            likeCount++;
+            likeCountElement.text(likeCount);
+          }
+        });
+      }
+    });
+
+    function likePost(postId, callback) {
+      $.ajax({
+        url: '/like',
+        method: 'POST',
+        data: {
+          post_id: postId
+        },
+        success: function (response) {
+          callback(response);
+        }
+      });
+    }
+
+    function unlikePost(postId, callback) {
+      $.ajax({
+        url: '/unlike',
+        method: 'POST',
+        data: {
+          post_id: postId
+        },
+        success: function (response) {
+          callback(response);
+        }
+      });
+    }
+  });
+</script>
+
   <!-- ##### JS ##### -->
   <script src="../static/js/bootstrap.js"></script>
   <script src="../static/js/main.js"></script>
@@ -254,11 +293,9 @@
   <div class="pagination-container">
     <div class="pagination">
       <a href="#" class="page-link">&laquo; 이전</a>
-      <a href="#" class="page-link">1</a>
-      <a href="#" class="page-link">2</a>
-      <a href="#" class="page-link">3</a>
-      <a href="#" class="page-link">4</a>
-      <a href="#" class="page-link">5</a>
+      {% for i in range(pages) %}
+      <a href="/pagination_end?cnt={{i}}" class="page-link">{{i+1}}</a>
+      {% endfor %}
       <a href="#" class="page-link">다음 &raquo;</a>
     </div>
   </div>

@@ -302,6 +302,16 @@
     font-family: 'SUITE-Regular';
     font-size: 18px;
   }
+
+  /* 경쟁작or탈락작 프롬프트값, 컷설명 폰트 조절 */
+  .cutScript {
+    font-size: small;
+  }
+
+  .cutPrompt {
+    font-size: small;
+  }
+
 </style>
 
 <body>
@@ -367,7 +377,7 @@
   <div class="center-line">
     <div style="width:70%;">
       <div class="title">
-        {{ id }} 제목 : {{ title }}
+        {{ id }} 제목 : {{ title }} 마감시간 : {{time}}
       </div>
     </div>
   </div>
@@ -378,7 +388,7 @@
 
   <div class="container center-line" style="width:75%;">
     <div class="row justify-content-between">
-      {% for i in range(images|length) %}
+    {% for i in range(images|length) %}
       <!-- 컷 이미지 및 컷 설명창 & 다음그림 그리기-->
       {% if i == 0 %}
       <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
@@ -405,7 +415,7 @@
           <div class="img" style="width:100%;">
             <div>
               <img src="data:image/png;base64,{{ images[i]|b64encode }}" style="width: 100%; height: auto;"
-                onclick="dis({{ orders[i] }})" onmouseover="showText(this)" onmouseout="hideText(this)">
+                onclick="dis({{orders[i]}})" onmouseover="showText(this)" onmouseout="hideText(this)">
               <div class="imageText" draggable="true" onmouseover="showText(this)" onmouseout="hideText(this)" onclick="dis({{i+1}})"> {{
                 prompts[i] }}</div>
             </div>
@@ -419,15 +429,15 @@
         </div>
       </div>
       {% endif %}
-      {% endfor %}
+    {% endfor %}
 
-      {% if images|length < 3 %} 
+      {% if images|length == 1 %}
       {% for i in range(3 - images|length) %} 
       <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
         {% if i == 0 %} 
         <div class="img" style="width:85%; text-align:center;">
           <!-- 컷 -->
-          <img src="../static/images/default.png" style="width: 100%;">
+          <img src="../static/images/default.png" style="width: 100%;" onclick="dis(2)">
           <!-- 컷 설명  -->
           <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
             다음 컷을 그리고 싶다면 우측의 <b><i>+ 버튼</i></b>을 눌러주세요!
@@ -437,7 +447,7 @@
         {% if i == 1 %} 
         <div class="img" style="width:85%; text-align:center;">
           <!-- 컷 -->
-          <img src="../static/images/default.png" style="width: 100%;" >
+          <img src="../static/images/default.png" style="width: 100%;" onclick="dis(3)">
           <!-- 컷 설명  -->
           <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
             다음 컷을 그리고 싶다면 우측의 <b><i>+ 버튼</i></b>을 눌러주세요!
@@ -446,6 +456,19 @@
         {% endif %} 
     </div>
     {% endfor %}
+    {% endif %}
+
+    {% if images|length == 2 %}
+    <div class="col-md d-flex center-line" style="margin: 0px; padding: 0px;">
+        <div class="img" style="width:85%; text-align:center;">
+          <!-- 컷 -->
+          <img src="../static/images/default.png" style="width: 100%;" onclick="dis(3)">
+          <!-- 컷 설명  -->
+          <div class="imgExplain" style="width: 100%; height:150px; margin-top:5px;">
+            다음 컷을 그리고 싶다면 우측의 <b><i>+ 버튼</i></b>을 눌러주세요!
+          </div>
+        </div>
+    </div>
     {% endif %}
 
     <!-- ##### 네번째 컷은 픽스가 안됨 따라서, 이미지 클릭했을 때 경쟁작컷을 보여줄 수 있다는 문구, 
@@ -550,8 +573,8 @@
             <a style="text-decoration: none; color:black;">
               <img class="card-img-top competitionImg" src="data:image/png;base64,{{ image2[i]|b64encode }}" alt="Image">
               <div class="card-text">
-                <p class="cutScript"> 컷 설명 : {{ script2[i] }} </p>
-                <p class="cutPrompt"> 입력 값 : {{ prompt2[i] }} </p>
+                <p class="cutScript font"> <strong>컷 설명</strong> : {{ script2[i] }} </p>
+                <p class="cutPrompt font"> <strong>입력 값</strong> : {{ prompt2[i] }} </p>
               </div>
             </a>
             <br><br>
@@ -579,8 +602,8 @@
               <a style="text-decoration: none; color:black;">
                 <img class="card-img-top competitionImg" src="data:image/png;base64,{{ image3[i]|b64encode }}" alt="Image">
                 <div class="card-text">
-                  <p class="cutScript"> 컷 설명 : {{ script3[i] }} </p>
-                  <p class="cutPrompt"> 입력 값 : {{ prompt3[i] }} </p>
+                  <p class="cutScript font"> <strong>컷 설명</strong> : {{ script3[i] }} </p>
+                  <p class="cutPrompt font" class="font"> <strong>입력 값</strong> : {{ prompt3[i] }} </p>
                 </div>
               </a>
               <br><br>
@@ -610,8 +633,8 @@
               <a style="text-decoration: none; color:black;">
                 <img class="card-img-top competitionImg" src="data:image/png;base64,{{ image4[i]|b64encode }}" alt="Image">
                 <div class="card-text">
-                  <p class="cutScript"> 컷 설명 : {{ script4[i] }} </p>
-                  <p class="cutPrompt"> 입력 값 : {{ prompt4[i] }} </p>
+                  <p class="cutScript font"> <strong>컷 설명</strong> : {{ script4[i] }} </p>
+                  <p class="cutPrompt font"> <strong>입력 값</strong> : {{ prompt4[i] }} </p>
                 </div>
               </a>
               <br><br>
